@@ -8,7 +8,11 @@ packages = [{include = "yt_download_loop", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+yt-dlp = "^2023.7.6"
+click = "^8.1.6"
 
+[tool.poetry.scripts]
+yt-dl-loop = "yt_download_loop.cli:cli_main"
 
 [build-system]
 requires = ["poetry-core"]
