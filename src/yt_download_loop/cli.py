@@ -30,7 +30,7 @@ def cli_main(ctx: click.Context, download_path: Path, web: bool):
         ctx.exit(0)
     click.secho(f"Downloading to {download_path.absolute()}", fg="blue")
     click.secho("Starting download loop", fg="green", bold=True)
-    while (url := input("enter url: ")) not in ["quit", "exit", "q"]:
+    while (url := input(click.style("enter url: ", fg="blue", bold=True))) not in ["quit", "exit", "q"]:
         if not url.strip():
             print("\n" * 10)
             continue
