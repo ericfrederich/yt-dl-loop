@@ -34,7 +34,7 @@ def cli_main(ctx: click.Context, download_path: Path, web: bool):
         if not url.strip():
             print("\n" * 10)
             continue
-        yt_dlp._real_main(["-P", str(download_path), "-f", "140", url])
+        yt_dlp._real_main(["-P", str(download_path), "-f", "140", "--embed-metadata", url])
         with (download_path / ".urls").open("ta") as f:
             print(url, file=f)
     click.secho("BYE", fg="green", bold=True)
