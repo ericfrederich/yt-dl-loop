@@ -1,19 +1,22 @@
-[tool.poetry]
+[project]
 name = "yt-download-loop"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = [
+    {name = "Eric L Frederich",email = "eric.frederich@gmail.com"}
+]
 readme = "README.md"
-packages = [{include = "yt_download_loop", from = "src"}]
+requires-python = ">=3.11"
+dependencies = [
+    "click (>=8.1.8,<9.0.0)",
+    "yt-dlp",
+]
 
-[tool.poetry.dependencies]
-# use latest yt-dlp
-yt-dlp = "*"
-python = "^3.11"
-click = "^8.1.6"
-
-[tool.poetry.scripts]
+[project.scripts]
 yt-dl-loop = "yt_download_loop.cli:cli_main"
+
+[tool.poetry]
+packages = [{include = "yt_download_loop", from = "src"}]
 
 [tool.black]
 line-length = 120
@@ -22,5 +25,5 @@ line-length = 120
 profile = "black"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
