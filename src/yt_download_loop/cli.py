@@ -5,11 +5,27 @@ import click
 import yt_dlp
 
 
+class EnsureDirPath(click.Path):
+    def __init__(self, prompt_for_creation=True, **kwargs):
+        super().__init__(**kwargs)
+        self.prompt_for_creation = prompt_for_creation
+
+    def convert(self, value, param, ctx):
+        path = super().convert(value, param, ctx)
+        if self.prompt_for_creation and path and not path.exists():
+            if click.confirm(f"{path} does not exist; Create it?", default=True):
+                path.mkdir(parents=True)
+            else:
+                click.secho("Bailing")
+                ctx.exit(0)
+        return path
+
+
 @click.command()
 @click.option(
     "-P",
     "download_path",
-    type=click.Path(file_okay=False, path_type=Path),
+    type=EnsureDirPath(file_okay=False, path_type=Path, prompt_for_creation=True),
     default=Path.cwd(),
     help="The paths where the files should be downloaded.  (this is just forwarded on to yt-dlp's -P option)",
 )
@@ -28,12 +44,6 @@ def cli_main(ctx: click.Context, download_path: Path, web: bool):
             if resp in ["quit", "exit", "q"]:
                 break
         ctx.exit(0)
-    if not download_path.exists():
-        if click.confirm(f"{download_path} does not exist; Create it?", default=True):
-            download_path.mkdir(parents=True)
-        else:
-            click.secho("Bailing")
-            ctx.exit(0)
     click.secho(f"Downloading to {download_path.absolute()}", fg="blue")
     click.secho("Starting download loop", fg="green", bold=True)
     while (url := input(click.style("enter url: ", fg="blue", bold=True))) not in ["quit", "exit", "q"]:
